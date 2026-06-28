@@ -40,14 +40,16 @@ header{
 
 nav {
   background-color: #8B0000;
+  width: 100%;
+  padding: 20px;
 }
-nav ul{
-  list-style:none;
-  display:flex;
-  justify-content:flex-end;
-  gap:20px;
-  margin:0;
-  padding:20px;
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
 }
 nav a:hover{
   color:#FFD700;
@@ -258,34 +260,39 @@ footer{
 
 @media (max-width: 768px){
   .dish-container{
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   #sliderImage{
-      width:100%;
-      height:auto;
+    width:100%;
+    height:auto;
   }
 
   .menu-container{
-      flex-direction:column;
-      align-items:center;
+    flex-direction:column;
+    align-items:center;
   }
 
   nav ul{
-      flex-direction:column;
-      text-align:center;
+    justify-content:center;
   }
 
   .hamburger{
-      display:block;
-      margin:10px;
+    display: block;
+    margin-left: auto;
+    padding: 20px;
   }
 
   #navMenu{
-      display:none;
-      flex-direction:column;
-      width:100%;
-      text-align:center;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #navMenu.show {
+    display: flex;
   }
 }

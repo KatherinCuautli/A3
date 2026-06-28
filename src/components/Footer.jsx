@@ -1,5 +1,5 @@
 function Footer() {
-    return (
+    return(
         <footer>
             <div class="footer-content">
                 <div class="business-hours">
