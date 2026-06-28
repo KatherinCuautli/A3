@@ -3,9 +3,12 @@ import { useState } from "react";
 import enchiladas from "../assets/enchiladas.jpg";
 import tacos from "../assets/tacos.jpg";
 import quesadillas from "../assets/quesadillas.jpg";
+import tostadas from "../assets/tostadas.jpg";
+import nachos from "../assets/nachos.jpg";
+import torta from "../assets/torta.jpg";
 
 function Gallery() {
-    const images = [enchiladas, tacos, quesadillas];
+    const images = [enchiladas, tacos, quesadillas, tostadas, nachos, torta];
     const [currentImage, setCurrentImage] = useState(0);
     
     function nextImage() {
