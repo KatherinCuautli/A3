@@ -38,6 +38,9 @@ header{
   font-size: 30px;
 }
 
+nav {
+  background-color: #8B0000;
+}
 nav ul{
   list-style:none;
   display:flex;
