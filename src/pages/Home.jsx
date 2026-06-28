@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import FeaturedDIshes from "../components/FeaturedDishes";
+import Gallery from "../components/Gallery";
 
 function Home(){
     return(
@@ -9,16 +10,7 @@ function Home(){
         </header>
 
         <FeaturedDIshes />
-        <section className="gallery">
-            <h2>Gallery</h2>
-            <div className="slider-container">
-                <button id="prevB">❮</button>
-                <img id="sliderImage"
-                     src="images/enchiladas.jpg"
-                     alt="Gallery Image"/>
-                <button id="nextB">❯</button>
-            </div>
-        </section>
+        <Gallery />
         </>
     );
 }
