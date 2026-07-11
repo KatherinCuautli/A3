@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import enchiladas from "../assets/enchiladas.jpg";
 import tacos from "../assets/tacos.jpg";
@@ -9,72 +9,86 @@ import torta from "../assets/torta.jpg";
 
 function Menu() {
   const [cart, setCart] = useState([]);
+  const [menu, setMenu] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5050/api/menu")
+        .then((res) => res.json())
+        .then((data) => setMenu(data))
+        .catch((err) => console.log(err));
+    }, []);
+
   function addToCart(name, price) {
     setCart([...cart, { name, price }])
   }
+
   function clearCart() {
     setCart([]);
   }
+
+  async function placeOrder() {
+    if(cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+    const order = {
+        customerName: "Guest",
+        items: cart.map(item => ({
+            name: item.name,
+            quantity: 1,
+            price: item.price
+        })),
+        total: total
+    };
+
+    try {
+        const response = await fetch("http://localhost:5050/api/orders", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(order),
+        });
+
+        if (response.ok) {
+            alert("Order placed successfully!");
+            setCart([]);
+        } else {
+            alert("Failed to place order.");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Server error.");
+    }
+}
+
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return(
     <>
       <section className="menu-selection">
-          <h1>Our Menu</h1>
-          <div className="menu-container">
-              <div className="menu-card">
-                  <img src={enchiladas} alt="Enchiladas" />
-                  <h3>Enchiladas</h3>
-                  <p>$13.99</p>
-                  <button onClick={() => addToCart("Enchiladas", 13.99)}>
-                      Add To Cart
-                  </button>
-              </div>
+        <h1>Our Menu</h1>
+        <div className="menu-container">
+        {menu.map((item) => (
+            <div className="menu-card" key={item._id}>
+                <img
+                    src={new URL(`../assets/${item.image}`, import.meta.url).href}
+                    alt={item.name}
+                />
 
-              <div className="menu-card">
-                  <img src={tacos} alt="Tacos" />
-                  <h3>Tacos al Pastor</h3>
-                  <p>$6.99</p>
-                  <button onClick={() => addToCart("Tacos", 6.99)}>
-                      Add To Cart
-                  </button>
-              </div>
+                <h3>{item.name}</h3>
 
-              <div className="menu-card">
-                  <img src={quesadillas} alt="Quesadillas" />
-                  <h3>Quesadillas</h3>
-                  <p>$8.99</p>
-                  <button onClick={() => addToCart("Quesadillas", 8.99)}>
-                      Add To Cart
-                  </button>
-              </div>
+                <p>${item.price.toFixed(2)}</p>
 
-              <div className="menu-card">
-                  <img src={tostadas} alt="Tostadas" />
-                  <h3>Tostadas</h3>
-                  <p>$10.99</p>
-                  <button onClick={() => addToCart("Tostadas", 10.99)}>
-                      Add To Cart
-                  </button>
-              </div>
-
-              <div className="menu-card">
-                  <img src={nachos} alt="Nachos" />
-                  <h3>Nachos</h3>
-                  <p>$7.99</p>
-                  <button onClick={() => addToCart("Nachos", 7.99)}>
-                      Add To Cart
-                  </button>
-              </div>
-
-              <div className="menu-card">
-                  <img src={torta} alt="Torta" />
-                  <h3>Torta</h3>
-                  <p>$15.99</p>
-                  <button onClick={() => addToCart("Torta", 15.99)}>
-                      Add To Cart
-                  </button>
-              </div>
+                <button
+                    onClick={() => addToCart(item.name, item.price)}>
+                    Add To Cart
+                </button>
+            </div>
+        ))}
           </div>
       </section>
 
@@ -94,7 +108,10 @@ function Menu() {
               </span>
           </h3>
           <button onClick={clearCart}>
-              Clear Cart
+            Clear Cart
+          </button>
+          <button onClick={placeOrder}>
+            Place Order
           </button>
       </section>
     </>
